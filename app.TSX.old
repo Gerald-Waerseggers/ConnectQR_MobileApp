@@ -1,0 +1,147 @@
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
+
+
+const HomeScreen: React.FC = ({ navigation }) => {
+  const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
+
+  const toggleContact = (contact: string) => {
+    if (selectedContacts.includes(contact)) {
+      // If contact is already selected, remove it
+      setSelectedContacts(selectedContacts.filter((c) => c !== contact));
+    } else {
+      // If contact is not selected, add it
+      setSelectedContacts([...selectedContacts, contact]);
+    }
+  };
+
+  const generateQRCode = () => {
+    // Logic to generate QR code with selectedContacts
+    // ...
+
+    // Display success message or navigate to QR code screen
+    // ...
+  };
+  const navigateToContactInfoPage = () => {
+    navigation.navigate('ContactInfo');
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Introducing ConnectQR</Text>
+      <Text style={styles.description}>
+        A groundbreaking mobile app developed in React Native that reimagines the way people exchange contact information. ConnectQR offers a modern and convenient solution for seamlessly sharing your contact details with others using QR codes.
+      </Text>
+
+      {/* Display toggleable contact options */}
+      <View style={styles.contactOptions}>
+        {['Phone Number', 'Instagram', 'LinkedIn', 'Discord'].map((contact) => (
+          <TouchableOpacity
+            key={contact}
+            style={[
+              styles.contactOption,
+              selectedContacts.includes(contact) && styles.selectedContactOption,
+            ]}
+            onPress={() => toggleContact(contact)}
+          >
+            <Text>{contact}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {/* Button to generate QR code */}
+      <TouchableOpacity style={styles.generateButton} onPress={generateQRCode}>
+        <Text style={styles.generateButtonText}>Generate QR Code</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.navigateButton}
+        onPress={navigateToContactInfoPage}
+      >
+        <Text style={styles.navigateButtonText}>Manage Contact Info</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const ContactInfoPage: React.FC = () => {
+  // ... (Logic for adding/updating contact information)
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Manage Contact Info</Text>
+      {/* ... (UI and logic for managing contact information) */}
+    </View>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="ContactInfo" component={ContactInfoPage} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+const styles = StyleSheet.create({
+  // ... (Previous styles remain unchanged)
+
+  container: {
+    flex: 1,
+    padding: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  description: {
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  contactOptions: {
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
+  contactOption: {
+    backgroundColor: '#DDDDDD',
+    padding: 8,
+    marginHorizontal: 4,
+    borderRadius: 8,
+  },
+  generateButton: {
+    backgroundColor: '#007BFF',
+    padding: 16,
+    borderRadius: 8,
+  },
+  generateButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+
+  selectedContactOption: {
+    backgroundColor: '#007BFF',
+    borderColor: 'white',
+  },
+  navigateButton: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+    backgroundColor: '#007BFF',
+    padding: 16,
+    borderRadius: 8,
+  },
+  navigateButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+});
+
+export default HomeScreen;
