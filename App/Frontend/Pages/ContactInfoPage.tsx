@@ -1,28 +1,78 @@
 // ContactInfoPage.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { RouteProp, NavigationProp } from '@react-navigation/native';
 
-const ContactInfoPage: React.FC = () => {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+type ContactInfoPageProps = {
+  navigation: NavigationProp<any>; // Use the correct type for your navigation stack
+  route: RouteProp<any, any>; // Use the correct type for your route
+};
+
+const ContactInfoPage: React.FC<ContactInfoPageProps> = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [facebook, setFacebook] = useState('');
   const [instagram, setInstagram] = useState('');
   const [linkedIn, setLinkedIn] = useState('');
-  const [discord, setDiscord] = useState('');
+  const [Discord, setDiscord] = useState('');
   // Add state for other contact possibilities
+  // Function to load saved contact information from AsyncStorage
+  const loadContactInfo = async () => {
+    try {
+      // Retrieve the contact information from AsyncStorage
+      const savedContactInfoString = await AsyncStorage.getItem('contactInfo');
 
-  const saveContactInfo = () => {
-    // Implement logic to save contact information
-    // You can use AsyncStorage, Redux, or send it to a server
+      if (savedContactInfoString) {
+        // If data exists, parse it from JSON and set the state
+        const savedContactInfo = JSON.parse(savedContactInfoString);
 
-    // For demonstration purposes, log the information to the console
-    console.log('Saved Contact Information:', {
-      phoneNumber,
-      facebook,
-      instagram,
-      linkedIn,
-      discord,
-      // Add other contact possibilities
-    });
+        setPhoneNumber(savedContactInfo.phoneNumber || '');
+        setFacebook(savedContactInfo.facebook || '');
+        setInstagram(savedContactInfo.instagram || '');
+        setLinkedIn(savedContactInfo.linkedIn || '');
+        setDiscord(savedContactInfo.Discord || '');
+        // Set state for other contact possibilities
+      }
+    } catch (error) {
+      // Handle errors, e.g., show an alert or log the error
+      console.error('Error loading contact information:', error);
+    }
+  };
+  useEffect(() => {
+    // Load saved contact information when the component mounts
+    loadContactInfo();
+  }, []);
+
+  const saveContactInfo = async () => {
+    try {
+      // Create an object with the contact information
+      const contactInfo = {
+        phoneNumber,
+        facebook,
+        instagram,
+        linkedIn,
+        Discord,
+        // Add other contact possibilities
+      };
+      // Convert the contactInfo object to a JSON string
+      const contactInfoString = JSON.stringify(contactInfo);
+
+      // Save the contact information to AsyncStorage
+      await AsyncStorage.setItem('contactInfo', contactInfoString);
+      // Log a success message
+      console.log('Contact information saved successfully:', contactInfo);
+
+      // Navigate back to the home screen
+      navigation.navigate('Home');
+      } catch (error) {
+      // Handle errors, e.g., show an alert or log the error
+    console.error('Error saving contact information:', error);
+      }
+
+     
+
+    
 
     // Optionally, you can navigate back to the home screen or perform other actions
     // For example:
@@ -61,7 +111,7 @@ const ContactInfoPage: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder="Discord"
-        value={discord}
+        value={Discord}
         onChangeText={setDiscord}
       />
       {/* Add input fields for other contact possibilities */}

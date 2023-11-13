@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { RouteProp, NavigationProp } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import QRCode from 'react-native-qrcode-svg'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type HomeScreenProps = {
   navigation: NavigationProp<any>; // Use the correct type for your navigation stack
@@ -15,6 +16,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     navigation.navigate('ContactInfo');
   };
   const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
+  const [storedContactInfo, setStoredContactInfo] = useState<any>({}); // Use the correct type for your contact info
+
 
   const toggleContact = (contact: string) => {
     if (selectedContacts.includes(contact)) {
@@ -30,13 +33,30 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     setModalVisible(!isModalVisible);
   };
 
-  const generateQRCode = () => {
-    toggleModal(); // Show modal
-    // Logic to generate QR code with selectedContacts
-    // ...
+  const generateQRCode = async () => {
+    try {
+      // Retrieve the stored contact information from AsyncStorage
+      const storedContactInfoString = await AsyncStorage.getItem('contactInfo');
 
-    // Display success message or navigate to QR code screen
-    // ...
+      if (storedContactInfoString) {
+        // If data exists, parse it from JSON and set the state
+        const storedContactInfoData = JSON.parse(storedContactInfoString);
+        // Filter selected contacts based on stored contact information
+        const selectedContactInfo = Object.fromEntries(
+          Object.entries(storedContactInfoData)
+            .filter(([key]) => selectedContacts.includes(key))
+        );
+
+        setStoredContactInfo(selectedContactInfo);
+        toggleModal(); // Show the modal
+      } else {
+        // Handle the case where no contact information is stored
+        console.log('No contact information stored.');
+      }
+    } catch (error) {
+      // Handle errors, e.g., show an alert or log the error
+      console.error('Error loading contact information:', error);
+    }
   };
 
 
@@ -70,7 +90,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       {/* Modal for displaying QR code or any other content */}
       <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
         <View style={styles.modalContainer}>
-          {/* Add content for the modal, such as QR code or any other information */}
+         {/* Use storedContactInfo to display the content in the modal */}
+         <Text style={styles.modalText}>
+            {`Phone Number: ${storedContactInfo.phoneNumber || ''}\n`}
+            {`Facebook: ${storedContactInfo.facebook || ''}\n`}
+            {`Instagram: ${storedContactInfo.instagram || ''}\n`}
+            {`LinkedIn: ${storedContactInfo.linkedIn || ''}\n`}
+            {`Discord: ${storedContactInfo.Discord || ''}\n`}
+            {/* Display other contact possibilities */}
+          </Text>
           <Text style={styles.modalText}>This is the QR Code or other content</Text>
           <QRCode
             value= "This is the value in the QRcode"
