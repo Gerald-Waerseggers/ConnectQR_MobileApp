@@ -61,9 +61,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           </TouchableOpacity>
         ))}
       </View>
-      <QRCode
-            value= "This is the value in the QRcode"
-          />
+      
       {/* Button to generate QR code */}
       <TouchableOpacity style={styles.generateButton} onPress={generateQRCode}>
         <Text style={styles.generateButtonText}>Generate QR Code</Text>
