@@ -11,8 +11,8 @@ const App: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="ContactInfo" component={ContactInfoPage} />
+        <Stack.Screen name="ConnectQR" component={HomeScreen} />
+        <Stack.Screen name="Contact Info" component={ContactInfoPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

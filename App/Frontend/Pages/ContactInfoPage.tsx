@@ -11,10 +11,10 @@ type ContactInfoPageProps = {
 };
 
 const ContactInfoPage: React.FC<ContactInfoPageProps> = ({ navigation }) => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [facebook, setFacebook] = useState('');
-  const [instagram, setInstagram] = useState('');
-  const [linkedIn, setLinkedIn] = useState('');
+  const [PhoneNumber, setPhoneNumber] = useState('');
+  const [Facebook, setFacebook] = useState('');
+  const [Instagram, setInstagram] = useState('');
+  const [LinkedIn, setLinkedIn] = useState('');
   const [Discord, setDiscord] = useState('');
   // Add state for other contact possibilities
   // Function to load saved contact information from AsyncStorage
@@ -27,10 +27,10 @@ const ContactInfoPage: React.FC<ContactInfoPageProps> = ({ navigation }) => {
         // If data exists, parse it from JSON and set the state
         const savedContactInfo = JSON.parse(savedContactInfoString);
 
-        setPhoneNumber(savedContactInfo.phoneNumber || '');
-        setFacebook(savedContactInfo.facebook || '');
-        setInstagram(savedContactInfo.instagram || '');
-        setLinkedIn(savedContactInfo.linkedIn || '');
+        setPhoneNumber(savedContactInfo.PhoneNumber || '');
+        setFacebook(savedContactInfo.Facebook || '');
+        setInstagram(savedContactInfo.Instagram || '');
+        setLinkedIn(savedContactInfo.LinkedIn || '');
         setDiscord(savedContactInfo.Discord || '');
         // Set state for other contact possibilities
       }
@@ -48,10 +48,10 @@ const ContactInfoPage: React.FC<ContactInfoPageProps> = ({ navigation }) => {
     try {
       // Create an object with the contact information
       const contactInfo = {
-        phoneNumber,
-        facebook,
-        instagram,
-        linkedIn,
+        PhoneNumber,
+        Facebook,
+        Instagram,
+        LinkedIn,
         Discord,
         // Add other contact possibilities
       };
@@ -84,30 +84,35 @@ const ContactInfoPage: React.FC<ContactInfoPageProps> = ({ navigation }) => {
       <Text style={styles.title}>Manage Contact Info</Text>
 
       {/* Form to input contact information */}
+      <Text style={styles.description}>Phone Number</Text>
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
-        value={phoneNumber}
+        value={PhoneNumber}
         onChangeText={setPhoneNumber}
       />
+      <Text style={styles.description}>Facebook</Text>
       <TextInput
         style={styles.input}
         placeholder="Facebook"
-        value={facebook}
+        value={Facebook}
         onChangeText={setFacebook}
       />
+      <Text style={styles.description}>Instagram</Text>
       <TextInput
         style={styles.input}
         placeholder="Instagram"
-        value={instagram}
+        value={Instagram}
         onChangeText={setInstagram}
       />
+      <Text style={styles.description}>LinkedIn</Text>
       <TextInput
         style={styles.input}
         placeholder="LinkedIn"
-        value={linkedIn}
+        value={LinkedIn}
         onChangeText={setLinkedIn}
       />
+      <Text style={styles.description}>Discord</Text>
       <TextInput
         style={styles.input}
         placeholder="Discord"
@@ -153,6 +158,11 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     color: 'white',
+    fontWeight: 'bold',
+  },
+
+  description: {
+    textAlign: 'center',
     fontWeight: 'bold',
   },
 });

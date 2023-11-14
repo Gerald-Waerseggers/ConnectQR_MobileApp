@@ -13,7 +13,7 @@ type HomeScreenProps = {
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const navigateToContactInfoPage = () => {
-    navigation.navigate('ContactInfo');
+    navigation.navigate('Contact Info');
   };
   const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
   const [storedContactInfo, setStoredContactInfo] = useState<any>({}); // Use the correct type for your contact info
@@ -68,7 +68,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
       </Text>
 
       <View style={styles.contactOptions}>
-        {['Phone Number', 'Instagram', 'LinkedIn', 'Discord'].map((contact) => (
+        {['PhoneNumber','Facebook', 'Instagram', 'LinkedIn', 'Discord'].map((contact) => (
           <TouchableOpacity
             key={contact}
             style={[
@@ -92,10 +92,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         <View style={styles.modalContainer}>
          {/* Use storedContactInfo to display the content in the modal */}
          <Text style={styles.modalText}>
-            {`Phone Number: ${storedContactInfo.phoneNumber || ''}\n`}
-            {`Facebook: ${storedContactInfo.facebook || ''}\n`}
-            {`Instagram: ${storedContactInfo.instagram || ''}\n`}
-            {`LinkedIn: ${storedContactInfo.linkedIn || ''}\n`}
+            {`Phone Number: ${storedContactInfo.PhoneNumber || ''}\n`}
+            {`Facebook: ${storedContactInfo.Facebook || ''}\n`}
+            {`Instagram: ${storedContactInfo.Instagram || ''}\n`}
+            {`LinkedIn: ${storedContactInfo.LinkedIn || ''}\n`}
             {`Discord: ${storedContactInfo.Discord || ''}\n`}
             {/* Display other contact possibilities */}
           </Text>
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   contactOptions: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginBottom: 16,
   },
   contactOption: {
@@ -143,6 +143,8 @@ const styles = StyleSheet.create({
     padding: 8,
     marginHorizontal: 4,
     borderRadius: 8,
+    marginBottom: 8,
+
   },
   generateButton: {
     backgroundColor: '#007BFF',
