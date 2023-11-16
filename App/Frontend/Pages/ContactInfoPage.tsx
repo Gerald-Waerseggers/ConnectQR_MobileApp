@@ -64,7 +64,7 @@ const ContactInfoPage: React.FC<ContactInfoPageProps> = ({ navigation }) => {
       console.log('Contact information saved successfully:', contactInfo);
 
       // Navigate back to the home screen
-      navigation.navigate('Home');
+      navigation.navigate('ConnectQR');
       } catch (error) {
       // Handle errors, e.g., show an alert or log the error
     console.error('Error saving contact information:', error);

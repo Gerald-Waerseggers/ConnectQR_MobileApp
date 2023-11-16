@@ -15,6 +15,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const navigateToContactInfoPage = () => {
     navigation.navigate('Contact Info');
   };
+  const navigateToSettingsScreen = () => {
+    navigation.navigate('Settings');
+  };
   const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
   const [storedContactInfo, setStoredContactInfo] = useState<any>({}); // Use the correct type for your contact info
 
@@ -48,6 +51,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         );
 
         setStoredContactInfo(selectedContactInfo);
+        // Encode the selected contact information in the QR code link
+        const link = `contactwebview://?info=${encodeURIComponent(JSON.stringify(storedContactInfo))}`;
+        console.log(link);
+        // Use the link as the value for the QR code
+
         toggleModal(); // Show the modal
       } else {
         // Handle the case where no contact information is stored
@@ -101,13 +109,20 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           </Text>
           <Text style={styles.modalText}>This is the QR Code or other content</Text>
           <QRCode
-            value= "This is the value in the QRcode"
+            value= {`contactwebview://?info=${encodeURIComponent(JSON.stringify(storedContactInfo))}`}
           />
           {/* Add any other content as needed */}
         </View>
       </Modal>
 
-      
+      {/* Button to navigate to the contact info page */}
+      <TouchableOpacity
+        style={styles.navigateSettingsButton}
+        onPress={navigateToSettingsScreen}
+      >
+        <Text style={styles.navigateButtonText}>Settings</Text>
+      </TouchableOpacity>
+      {/* Button to navigate to the contact info page */}
       <TouchableOpacity
         style={styles.navigateButton}
         onPress={navigateToContactInfoPage}
@@ -167,6 +182,18 @@ const styles = StyleSheet.create({
     right: 16,
     backgroundColor: '#007BFF',
     padding: 16,
+    width: '49%',  // Set the width to 50% of the screen
+
+    borderRadius: 8,
+  },
+  navigateSettingsButton: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    backgroundColor: '#007BFF',
+    padding: 16,
+    width: '49%',  // Set the width to 50% of the screen
+
     borderRadius: 8,
   },
   navigateButtonText: {

@@ -1,0 +1,31 @@
+// ContactWebViewPage.tsx
+import React from 'react';
+import { WebView } from 'react-native-webview';
+import { Linking } from 'react-native';
+
+const ContactWebViewPage = ({ route }) => {
+  const { storedContactInfo } = route.params;
+
+  // Handle the link parameters
+  const { info } = Linking.parse(route.params.url).queryParams;
+  const decodedInfo = JSON.parse(decodeURIComponent(info));
+
+  // Create an HTML string to display the selected contact information
+  const htmlContent = `
+    <html>
+      <body>
+        <h1>Contact Information</h1>
+        <p>Phone Number: ${decodedInfo.phoneNumber || 'N/A'}</p>
+        <p>Facebook: ${decodedInfo.facebook || 'N/A'}</p>
+        <p>Instagram: ${decodedInfo.Instagram || 'N/A'}</p>
+        <p>LinkedIn: ${decodedInfo.LinkedIn || 'N/A'}</p>
+        <p>Discord: ${decodedInfo.Discord || 'N/A'}</p>
+        <!-- Add other contact possibilities -->
+      </body>
+    </html>
+  `;
+
+  return <WebView source={{ html: htmlContent }} />;
+};
+
+export default ContactWebViewPage;
